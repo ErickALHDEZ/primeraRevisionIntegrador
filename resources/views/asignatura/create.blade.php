@@ -1,9 +1,12 @@
-Formulario de creación de asignatura.
-
+@extends('layouts.app')
+@section('content')
+<div class="container">
 
 <form action="{{ url('/asignatura') }}" method="post" enctype="multipart/form-data">
 @csrf
-@include('asignatura.form');
+@include('asignatura.form', ['modo'=>'Crear'] );
 
 
 </form>
+</div>
+@endsection

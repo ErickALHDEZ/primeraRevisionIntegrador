@@ -1,4 +1,15 @@
-Mostrar la lista de asignaturas
+@extends('layouts.app')
+@section('content')
+<div class="container">
+
+    @if(Session::has('mensaje'))
+    {{ Session::get('mensaje') }}
+    @endif
+
+
+<a href="{{ url('asignatura/create') }}" class="btn btn-success"> Registrar nueva asignatura</a>
+<br/>
+<br/>
 
 <table class ="table table-light">
 
@@ -27,15 +38,15 @@ Mostrar la lista de asignaturas
             <td>{{ $asignatura->Caracterizacion }}</td>
             <td>
                 
-            <a href="{{ url('/asignatura/'.$asignatura->id.'/edit') }}">
+            <a href="{{ url('/asignatura/'.$asignatura->id.'/edit') }}" class="btn btn-warning">
                 Editar
             </a>
              | 
 
-            <form action="{{ url('/asignatura/'.$asignatura->id) }}" method="post">
+            <form action="{{ url('/asignatura/'.$asignatura->id) }}"class="d-inline" method="post">
             @csrf
             {{ method_field('DELETE') }}
-            <input type="submit" onclick="return confirm('¿Desea borrar el registro?')"
+            <input class="btn btn-danger" type="submit" onclick="return confirm('¿Desea borrar el registro?')"
              value="Borrar">
 
             </form>
@@ -47,3 +58,5 @@ Mostrar la lista de asignaturas
     </tbody>
 
 </table>
+</div>
+@endsection

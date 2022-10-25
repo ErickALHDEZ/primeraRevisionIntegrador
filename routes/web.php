@@ -18,7 +18,7 @@ use App\Http\Controllers\AsignaturaController;
 //En este documento se manipulan las rutas que nos permiten acceder directamente a las vistas.
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 /*
@@ -30,4 +30,13 @@ Route::get('/asignatura/create',[AsignaturaController::class,'create']);
 
 
 //Esta instrucción nos permite acceder a todas las rutas para no tener que referenciar manualmente una por una.
-Route::resource('asignatura', AsignaturaController::class);
+Route::resource('asignatura', AsignaturaController::class)->middleware('auth');
+
+Auth::routes(['register'=>false, 'reset'=>false]);
+
+Route::get('/home', [AsignaturaController::class, 'index'])->name('home');
+
+Route::group(['middleware' => 'auth'], function() {
+
+    Route::get('/', [AsignaturaController::class, 'index'])->name('home');
+});

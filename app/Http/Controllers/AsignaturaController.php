@@ -41,6 +41,21 @@ class AsignaturaController extends Controller
      */
     public function store(Request $request)
     {
+
+        $campos=[
+            'Clave'=>'required|string|max:100',
+            'Nombre'=>'required|string|max:100',
+            'Cambio'=>'required|string|max:100',
+            'Horas teoricas'=>'required|string|max:100',
+            'Horas practicas'=>'required|string|max:100',
+            'Caracterizacion'=>'required|string|max:100'
+
+        ];
+        $mensaje=[
+            'required'=>'El :attribute es requerido'
+        ];
+
+        $this->validate($request, $campos, $mensaje);
         //Todos los registros que sean enviados son recepcionados y guardados en la variables $datosAsignatura
         //$datosAsignatura = request()->all();
 
@@ -50,7 +65,8 @@ class AsignaturaController extends Controller
         //En el modelo insertamos la base de datos, o sea toda la info excepto el token.
         Asignatura::insert($datosAsignatura);
 
-        return response()->json($datosAsignatura);
+        //return response()->json($datosAsignatura);
+        return redirect ('asignatura')->with('mensaje','Asignatura agregada con éxito');
     }
 
     /**
@@ -86,12 +102,32 @@ class AsignaturaController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        /* Por alguna razón no me permite validar en editar
+        $campos=[
+            'Clave'=>'required|string|max:100',
+            'Nombre'=>'required|string|max:100',
+            'Cambio'=>'required|string|max:100',
+            'Horas teoricas'=>'required|string|max:100',
+            'Horas practicas'=>'required|string|max:100',
+            'Caracterizacion'=>'required|string|max:100',
+
+        ];
+        $mensaje=[
+            'required'=>'El :attribute es requerido'
+        ];
+
+        $this->validate($request, $campos, $mensaje);
+        */
+
         //
         $datosAsignatura = request()->except(['_token','_method']);
         Asignatura::where('id','=',$id)->update($datosAsignatura);
 
         $asignatura=Asignatura::findOrFail($id);
-        return view('asignatura.edit', compact('asignatura'));
+        //return view('asignatura.edit', compact('asignatura'));
+
+        return redirect('asignatura')->with('mensaje','Asignatura modificada');
     }
 
     /**
@@ -104,6 +140,6 @@ class AsignaturaController extends Controller
     {
         //
         Asignatura::destroy($id);
-        return redirect('asignatura');
+        return redirect('asignatura')->with('mensaje','Asignatura eliminada');
     }
 }
